@@ -25,7 +25,12 @@ export async function fetchOrUpdateUser(store) {
 
     store.dispatch(userFetching())
     try{
-      const response = await fetch('http://localhost:3001/api/v1/user/profile')
+      const response = await fetch('http://localhost:3001/api/v1/user/profile', {
+        method: 'post',
+        headers: new Headers({
+          'Content-Type': 'application/x-www-form-urlencoded'
+        })
+      })
       const data = await response.json()
       console.log(data)
       store.dispatch(userResolved(data))
@@ -35,43 +40,43 @@ export async function fetchOrUpdateUser(store) {
 }
 
 export default function userReducer(state = initialState, action) {
-    return produce(state, (draft) => {
-      switch (action.type) {
-        case FETCHING: {
-          if (draft.status === 'void') {
-            draft.status = 'pending'
-            return
-          }
-          if (draft.status === 'rejected') {
-            draft.error = null
-            draft.status = 'pending'
-            return
-          }
-          if (draft.status === 'resolved') {
-            draft.status = 'updating'
-            return
-          }
+  return produce(state, (draft) => {
+    switch (action.type) {
+      case FETCHING: {
+        if (draft.status === 'void') {
+          draft.status = 'pending'
           return
         }
-        case RESOLVED: {
-          if (draft.status === 'pending' || draft.status === 'updating') {
-            draft.data = action.payload
-            draft.status = 'resolved'
-            return
-          }
+        if (draft.status === 'rejected') {
+          draft.error = null
+          draft.status = 'pending'
           return
         }
-        case REJECTED: {
-          if (draft.status === 'pending' || draft.status === 'updating') {
-            draft.status = 'rejected'
-            draft.error = action.payload
-            draft.data = null
-            return
-          }
+        if (draft.status === 'resolved') {
+          draft.status = 'updating'
           return
         }
-        default:
-          return
+        return
       }
-    })
-  }
+      case RESOLVED: {
+        if (draft.status === 'pending' || draft.status === 'updating') {
+          draft.data = action.payload
+          draft.status = 'resolved'
+          return
+        }
+        return
+      }
+      case REJECTED: {
+        if (draft.status === 'pending' || draft.status === 'updating') {
+          draft.status = 'rejected'
+          draft.error = action.payload
+          draft.data = null
+          return
+        }
+        return
+      }
+      default:
+        return
+    }
+  })
+}

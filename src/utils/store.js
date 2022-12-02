@@ -1,7 +1,9 @@
 import { combineReducers, createStore } from 'redux'
+import loginReducer from '../features/login'
 import userReducer from '../features/user'
 
 const reducer = combineReducers({
+    login: loginReducer,
     user: userReducer
 })
 
