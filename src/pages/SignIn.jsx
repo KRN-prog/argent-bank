@@ -2,19 +2,20 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons'
 import { useSelector, useStore } from 'react-redux'
+import { useHistory } from "react-router-dom";
 import { selectLogin } from '../utils/selector'
 import { fetchOrUpdateLogin } from '../features/login'
 
 function SignIn() {
     const store = useStore()
-    //console.log(store.getState())
+    const navigate = useHistory()
     const [values, setValues] = useState({})
 
     const login = useSelector(selectLogin)
-    console.log(login)
     const submit = e => {
         e.preventDefault()
         fetchOrUpdateLogin(store, values)
+        navigate.push("/user")
     }
 
     return(

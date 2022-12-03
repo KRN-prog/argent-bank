@@ -1,5 +1,4 @@
 import produce from 'immer'
-import { useHistory } from "react-router-dom";
 import { selectLogin } from '../utils/selector'
 
 const initialState = {
@@ -38,10 +37,8 @@ export async function fetchOrUpdateLogin(store, formData) {
         })
       })
       const data = await response.json()
-      console.log(data)
       if (data.status === 200) {
         store.dispatch(loginSubmit(data))
-        document.location.href="/user?token="+data.body.token;
       }else{
         store.dispatch(loginRejected("Utilisateur non trouvé."))
       }
@@ -81,7 +78,6 @@ export default function loginReducer(state = initialState, action) {
         return
       }
       case REJECTED: {
-        console.log("eeeeeeeeeee")
         if (draft.status === 'pending' || draft.status === 'updating') {
           draft.status = 'rejected'
           draft.error = action.payload
