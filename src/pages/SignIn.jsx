@@ -15,14 +15,17 @@ function SignIn() {
     const submit = e => {
         e.preventDefault()
         fetchOrUpdateLogin(store, values)
-        navigate.push("/user")
+       // console.log(login.status)
     }
-
+    /*if (login.status === "resolved") {
+        navigate.push("/user")   
+    }*/
     return(
         <main className="main bg-dark">
             <section className="sign-in-content">
                 <FontAwesomeIcon icon={faUserCircle} />
                 <h1>Sign In</h1>
+                {login.status === "resolved" ? navigate.push("/user") : null}
                 {login.status === "rejected" && login.error !== null ? login.error : null}
                 <form encType="application/x-www-form-urlencoded" onSubmit={submit}>
                     <div className="input-wrapper">
