@@ -8,9 +8,11 @@ import logo from "../assets/argentBankLogo.png";
 
 function Header() {
     const user = useSelector(selectUser)
+    const store = useStore()
     console.log(user)
     const signOut = e => {
         e.preventDefault()
+        //store.dispatch()
     }
     return(
         <nav className="main-nav">
