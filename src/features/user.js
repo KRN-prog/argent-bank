@@ -10,13 +10,15 @@ const initialState = {
 const FETCHING = 'user/fetching'
 const RESOLVED = 'user/resolved'
 const REJECTED = 'user/rejected'
+const SIGNOUT = 'user/signOut'
 
 const userFetching = () => ({ type: FETCHING })
 const userResolved = (data) => ({ type: RESOLVED, payload: data })
 const userRejected = (error) => ({ type: REJECTED, payload: error })
+const userSignOut = () => ({ type: SIGNOUT })
 
 
-export async function fetchOrUpdateUser(store) {
+export async function fetchOrUpdateUser(store, userToken) {
     const status = selectUser(store.getState()).status
 
     if (status === 'pending' || status === 'updating') {
@@ -28,7 +30,7 @@ export async function fetchOrUpdateUser(store) {
       const response = await fetch('http://localhost:3001/api/v1/user/profile', {
         method: 'post',
         headers: new Headers({
-          'Content-Type': 'application/x-www-form-urlencoded'
+          "Authorization": `Bearer ${userToken}`
         })
       })
       const data = await response.json()
@@ -73,6 +75,9 @@ export default function userReducer(state = initialState, action) {
           draft.data = null
           return
         }
+        return
+      }
+      case SIGNOUT: {
         return
       }
       default:

@@ -1,21 +1,37 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { useSelector, useStore } from 'react-redux'
-import { selectLogin } from '../utils/selector'
+import { useHistory } from "react-router-dom";
+import { selectLogin, selectUser } from '../utils/selector'
+import { fetchOrUpdateUser } from '../features/user'
 
 
 function User() {
     const store = useStore()
+    const navigate = useHistory()
     const login = useSelector(selectLogin)
+    const user = useSelector(selectUser)
+    let token
     console.log(login)
+    if (login.data !== null) {
+        token = login.data.body.token
+    }else{
+        navigate.push("/")
+    }
+    console.log(token)
 
-    return(
+    useEffect(() => {
+        fetchOrUpdateUser(store, token)
+    }, [store])
+    console.log(user)
+
+    return(user.status === "resolved" ? (
         <main className="main bg-dark">
             <div className="header">
-                <h1>Welcome back<br/>Tony Jarvis!</h1>
+                <h1>Welcome back<br/>{`${user.data.body.firstName} ${user.data.body.lastName}`}!</h1>
                 <button className="edit-button">Edit Name</button>
             </div>
             <h2 className="sr-only">Accounts</h2>
-            <section className="account">
+            <section cl2assName="account">
                 <div className="account-content-wrapper">
                     <h3 className="account-title">Argent Bank Checking (x8349)</h3>
                     <p className="account-amount">$2,082.79</p>
@@ -46,6 +62,7 @@ function User() {
                 </div>
             </section>
         </main>
+        ): null
     )
 }
 

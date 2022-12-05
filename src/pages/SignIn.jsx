@@ -15,11 +15,7 @@ function SignIn() {
     const submit = e => {
         e.preventDefault()
         fetchOrUpdateLogin(store, values)
-       // console.log(login.status)
     }
-    /*if (login.status === "resolved") {
-        navigate.push("/user")   
-    }*/
     return(
         <main className="main bg-dark">
             <section className="sign-in-content">
