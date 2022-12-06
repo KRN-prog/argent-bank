@@ -6,6 +6,7 @@ import './utils/style/main.css';
 import Home from './pages/Home.jsx';
 import SignIn from './pages/SignIn.jsx';
 import User from './pages/User.jsx';
+import Transactions from './pages/Transactions.jsx';
 import Header from './components/Header.jsx';
 import Footer from './components/Footer.jsx';
 import store from './utils/store'
@@ -20,6 +21,7 @@ ReactDOM.render(
           <Route exact path='/' component={Home} />
           <Route exact path='/sign-in' component={SignIn} />
           <Route exact path='/user' component={User} />
+          <Route exact path='/transactions' component={Transactions} />
         </Switch>
         <Footer />
       </Router>
