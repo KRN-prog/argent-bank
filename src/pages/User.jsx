@@ -4,6 +4,7 @@ import { useSelector, useStore } from 'react-redux'
 import { useHistory } from "react-router-dom";
 import { selectLogin, selectUser } from '../utils/selector'
 import { fetchOrUpdateUser } from '../features/user'
+import { updateUserName } from '../features/updateName'
 
 
 function User() {
@@ -11,8 +12,9 @@ function User() {
     const navigate = useHistory()
     const login = useSelector(selectLogin)
     const user = useSelector(selectUser)
+    const [names, setChangeNames] = useState(false)
     const [changeName, setChangeName] = useState(false)
-    let reverseName = e => { 
+    let changeNameState = e => { 
         e.preventDefault()
         setChangeName( !changeName )
     }
@@ -29,6 +31,12 @@ function User() {
         fetchOrUpdateUser(store, token)
     }, [store, token])
     //console.log(user)
+
+    let updateName = e => {
+        e.preventDefault()
+        updateUserName(store, names, token)
+        fetchOrUpdateUser(store, token)
+    }
     
 
     return(user.status === "resolved" ? (
@@ -43,12 +51,12 @@ function User() {
                     : 
                     (
                         <form>
-                            <input type="text" name="firstName" placeholder='First Name'/>
-                            <input type="text" name="lastName" placeholder='Last Name'/>
+                            <input type="text" name="firstName" placeholder='First Name' onChange={(e) => setChangeNames({...names, [e.target.name]: e.target.value})}/>
+                            <input type="text" name="lastName" placeholder='Last Name' onChange={(e) => setChangeNames({...names, [e.target.name]: e.target.value})}/>
 
                             <div>
-                                <button className="edit-button">Save</button>
-                                <button className="edit-button" onClick={reverseName}>Cancel</button>
+                                <button className="edit-button" onClick={updateName}>Save</button>
+                                <button className="edit-button" onClick={changeNameState}>Cancel</button>
                             </div>
                         </form>
                     )
@@ -56,7 +64,7 @@ function User() {
                 </h1>
                 {
                 changeName === false ? 
-                (<button className="edit-button" onClick={reverseName}>Edit Name</button>)
+                (<button className="edit-button" onClick={changeNameState}>Edit Name</button>)
                 : 
                 null
                 }
