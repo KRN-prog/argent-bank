@@ -10,22 +10,22 @@ const initialState = {
 const FETCHING = 'user/fetching'
 const RESOLVED = 'user/resolved'
 const REJECTED = 'user/rejected'
-const SIGNOUT = 'user/signOut'
 
 const userFetching = () => ({ type: FETCHING })
 const userResolved = (data) => ({ type: RESOLVED, payload: data })
 const userRejected = (error) => ({ type: REJECTED, payload: error })
-const userSignOut = () => ({ type: SIGNOUT })
 
 
 export async function fetchOrUpdateUser(store, userToken) {
-    const status = selectUser(store.getState()).status
+  //console.log(userToken)
+  const status = selectUser(store.getState()).status
 
-    if (status === 'pending' || status === 'updating') {
-      return
-    }
+  if (status === 'pending' || status === 'updating') {
+    return
+  }
 
-    store.dispatch(userFetching())
+  store.dispatch(userFetching())
+  if (userToken !== undefined) {
     try{
       const response = await fetch('http://localhost:3001/api/v1/user/profile', {
         method: 'post',
@@ -34,11 +34,18 @@ export async function fetchOrUpdateUser(store, userToken) {
         })
       })
       const data = await response.json()
-      console.log(data)
-      store.dispatch(userResolved(data))
+      if(data.status === 200){
+        store.dispatch(userResolved(data))
+      }else{
+        store.dispatch(userRejected("Connexion non authorizé"))
+      }
+      //console.log(data)
     }catch (error){
       store.dispatch(userRejected(error))
-    }
+    } 
+  }else{
+    store.dispatch(userRejected(""))
+  }
 }
 
 export default function userReducer(state = initialState, action) {
@@ -75,9 +82,6 @@ export default function userReducer(state = initialState, action) {
           draft.data = null
           return
         }
-        return
-      }
-      case SIGNOUT: {
         return
       }
       default:

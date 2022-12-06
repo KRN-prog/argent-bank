@@ -1,5 +1,4 @@
 import produce from 'immer'
-import { useHistory } from "react-router-dom";
 import { selectLogin } from '../utils/selector'
 
 const initialState = {
@@ -25,29 +24,33 @@ export async function fetchOrUpdateLogin(store, formData) {
   }
 
   store.dispatch(loginFetching())
-  if (formData.username !== undefined || formData.password !== undefined) {
-    try{
-      const response = await fetch('http://localhost:3001/api/v1/user/login', {
-        method: 'post',
-        headers: new Headers({
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }),
-        body: new URLSearchParams({
-          'email': formData.username,
-          'password': formData.password,
+  if (formData !== undefined) {
+    if (formData.username !== undefined || formData.password !== undefined) {
+      try{
+        const response = await fetch('http://localhost:3001/api/v1/user/login', {
+          method: 'post',
+          headers: new Headers({
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }),
+          body: new URLSearchParams({
+            'email': formData.username,
+            'password': formData.password,
+          })
         })
-      })
-      const data = await response.json()
-      if (data.status === 200) {
-        store.dispatch(loginSubmit(data))
-      }else{
-        store.dispatch(loginRejected("Utilisateur non trouvé."))
-      }
-    }catch (error){
-      store.dispatch(loginRejected(error))
-    }   
+        const data = await response.json()
+        if (data.status === 200) {
+          store.dispatch(loginSubmit(data))
+        }else{
+          store.dispatch(loginRejected("Utilisateur non trouvé."))
+        }
+      }catch (error){
+        store.dispatch(loginRejected(error))
+      }   
+    }else{
+      store.dispatch(loginRejected("Veuillez remplire tout les champs s'il vous plait."))
+    } 
   }else{
-    store.dispatch(loginRejected("Veuillez remplire tout les champs s'il vous plait."))
+    store.dispatch(loginRejected(""))
   }
 }
 
