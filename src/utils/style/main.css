@@ -283,6 +283,48 @@ body {
   color: #fff;
 }
 
+
+.header--transactions{
+  padding: 10px 0;
+  background: #b580ff;
+}
+thead{
+  color: #fff;
+}
+.tableBalance{
+  margin: auto;
+  width: 90%;
+  border-spacing: 0px;
+}
+.tableBodyBalance{
+  background: #fff;
+}
+
+.tableDateCell, .DropDown__cell{
+  display: flex;
+}
+.arrow{
+  flex-basis: 5%;
+}
+.contentDate{
+  flex-basis: 100%;
+}
+.tableArrowCell, .tableDateCell, .tableDescriptionCell, .tableAmountCell, .tableBalanceCell{
+  padding: 10px 0;
+  border-bottom: 1px solid;
+}
+
+.DropDown > td{
+  padding: 10px 0;
+}
+.dropDownContent{
+  text-align: left;
+  padding-left: 50px;
+}
+.dropDownContent > div{
+  margin: 5px 0;
+}
+
 @media (min-width: 720px) {
   .account {
     flex-direction: row;

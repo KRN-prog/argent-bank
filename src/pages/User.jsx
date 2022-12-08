@@ -38,6 +38,10 @@ function User() {
         fetchOrUpdateUser(store, token)
     }
     
+    const redirect = e => {
+        e.preventDefault()
+        navigate.push("/transactions")
+    }
 
     return(user.status === "resolved" ? (
         <main className="main bg-dark">
@@ -69,7 +73,6 @@ function User() {
                 null
                 }
             </div>
-            <h2 className="sr-only">Accounts</h2>
             <section className="account">
                 <div className="account-content-wrapper">
                     <h3 className="account-title">Argent Bank Checking (x8349)</h3>
@@ -77,7 +80,7 @@ function User() {
                     <p className="account-amount-description">Available Balance</p>
                 </div>
                 <div className="account-content-wrapper cta">
-                    <button className="transaction-button">View transactions</button>
+                    <button className="transaction-button" onClick={redirect}>View transactions</button>
                 </div>
             </section>
             <section className="account">
@@ -87,7 +90,7 @@ function User() {
                     <p className="account-amount-description">Available Balance</p>
                 </div>
                 <div className="account-content-wrapper cta">
-                    <button className="transaction-button">View transactions</button>
+                    <button className="transaction-button" onClick={redirect}>View transactions</button>
                 </div>
             </section>
             <section className="account">
@@ -97,7 +100,7 @@ function User() {
                     <p className="account-amount-description">Current Balance</p>
                 </div>
                 <div className="account-content-wrapper cta">
-                    <button className="transaction-button">View transactions</button>
+                    <button className="transaction-button" onClick={redirect}>View transactions</button>
                 </div>
             </section>
         </main>
