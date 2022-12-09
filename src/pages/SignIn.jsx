@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons'
 import { useSelector, useStore } from 'react-redux'
@@ -12,6 +12,9 @@ function SignIn() {
     const [values, setValues] = useState({})
 
     const login = useSelector(selectLogin)
+    useEffect(() => {
+        {login.status === "resolved" ? navigate.push("/user") : (<div></div>)}
+    })
     const submit = e => {
         e.preventDefault()
         fetchOrUpdateLogin(store, values)
@@ -21,7 +24,6 @@ function SignIn() {
             <section className="sign-in-content">
                 <FontAwesomeIcon icon={faUserCircle} />
                 <h1>Sign In</h1>
-                {login.status === "resolved" ? navigate.push("/user") : null}
                 {login.status === "rejected" && login.error !== null ? login.error : null}
                 <form encType="application/x-www-form-urlencoded" onSubmit={submit}>
                     <div className="input-wrapper">
