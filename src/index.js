@@ -11,7 +11,6 @@ import Header from './components/Header.jsx';
 import Footer from './components/Footer.jsx';
 import store from './utils/store'
 
-
 ReactDOM.render(
   <Provider store={store}>
     <React.StrictMode>
